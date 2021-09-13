@@ -31,18 +31,19 @@ try {
   });
 
   const json = await res.json();
-  console.log(json);
 
-  const outputForAlfred = json.hits.map((h: any) => {
-    return {
-      arg:
-        `https://sortable-md-storage.web.app//board/${h.boardId}/card/${h.objectID}`,
+  const items = json.hits.map((h: any) => {
+    const cardLink =
+      `https://sortable-md-storage.web.app//board/${h.boardId}/card/${h.objectID}`;
+    return ({
+      uid: h.objectID,
+      arg: cardLink,
       title: h.title,
-      subtitle: h.mdStr,
-    };
+      subtitle: cardLink,
+    });
   });
 
-  console.log(JSON.stringify(outputForAlfred));
+  console.log(JSON.stringify({ "items": items }));
 } catch (e) {
   if (e instanceof Error) {
     const outputForAlfred = {
