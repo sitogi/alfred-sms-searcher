@@ -6,6 +6,11 @@ try {
     throw new Error("-q is not specified!");
   }
 
+  const smsHost = Deno.env.get("SMS_HOST_NAME");
+  if (!smsHost) {
+    throw new Error("environment variable SMS_HOST_NAME is not specified!");
+  }
+
   const appId = Deno.env.get("ALGOLIA_APP_ID");
   if (!appId) {
     throw new Error("environment variable ALGOLIA_APP_ID is not specified!");
@@ -33,8 +38,7 @@ try {
   const json = await res.json();
 
   const items = json.hits.map((h: any) => {
-    const cardLink =
-      `https://sortable-md-storage.web.app//board/${h.boardId}/card/${h.objectID}`;
+    const cardLink = `https://${smsHost}/board/${h.boardId}/card/${h.objectID}`;
     return ({
       uid: h.objectID,
       arg: cardLink,
